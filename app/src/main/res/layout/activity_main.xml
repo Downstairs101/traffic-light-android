@@ -6,13 +6,21 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
+    <fragment
+            app:defaultNavHost="true"
+            app:navGraph="@navigation/main_navigation_graph"
+            android:name="androidx.navigation.fragment.NavHostFragment"
+            android:id="@+id/fragmentHost"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
     <com.google.android.material.bottomappbar.BottomAppBar
-        android:id="@+id/bottomBar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        app:backgroundTint="@color/primary"
-        app:fabCradleMargin="-10dp" />
+            android:id="@+id/bottomBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            app:backgroundTint="@color/primary"
+            app:fabCradleMargin="-10dp"/>
 
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
             android:id="@+id/addButton"
