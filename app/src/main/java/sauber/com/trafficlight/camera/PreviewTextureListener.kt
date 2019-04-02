@@ -6,10 +6,7 @@ import android.view.TextureView
 class PreviewTextureListener {
 
     companion object {
-        fun listen(surfaceAvailable: () -> Unit) = SurfaceTextureListener {
-            surfaceAvailable()
-        }
-
+        fun listen(surfaceAvailable: () -> Unit) = SurfaceTextureListener(surfaceAvailable)
 
         class SurfaceTextureListener constructor(val surfaceAvailable: () -> Unit) :
             TextureView.SurfaceTextureListener {

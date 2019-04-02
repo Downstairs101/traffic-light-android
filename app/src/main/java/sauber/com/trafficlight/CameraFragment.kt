@@ -1,7 +1,6 @@
 package sauber.com.trafficlight
 
 
-import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -9,7 +8,6 @@ import android.graphics.ImageFormat
 import android.graphics.SurfaceTexture
 import android.hardware.camera2.CameraCaptureSession
 import android.hardware.camera2.CameraDevice
-import android.hardware.camera2.CameraManager
 import android.hardware.camera2.CaptureRequest
 import android.media.ImageReader
 import android.net.Uri
@@ -22,51 +20,33 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.fragment_camera.*
+import sauber.com.trafficlight.camera.Camera
 import sauber.com.trafficlight.camera.PreviewTextureListener
-import sauber.com.trafficlight.extensions.backCameraId
 import java.io.File
 import java.io.FileOutputStream
 
 
 class CameraFragment : Fragment() {
+    private var camera: Camera? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         return inflater.inflate(R.layout.fragment_camera, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        context?.also {
+            camera = Camera(it)
+        }
     }
 
     override fun onResume() {
         super.onResume()
 
         if (cameraPreview.isAvailable) {
-            openCamera()
+            camera?.openRearCamera {cameraOpened(it)}
         } else {
-            cameraPreview.surfaceTextureListener = PreviewTextureListener.listen { openCamera() }
+            cameraPreview.surfaceTextureListener = PreviewTextureListener.listen { camera?.openRearCamera {cameraOpened(it)}}
         }
-    }
-
-    private fun openCamera() {
-        try {
-            cameraManager().openCamera(cameraManager().backCameraId(), cameraCallback, null)
-        } catch (ex: SecurityException) {
-            ex.printStackTrace()
-        } catch (ex: Exception) {
-            ex.printStackTrace()
-        }
-    }
-
-    private val cameraCallback = object : CameraDevice.StateCallback() {
-        override fun onOpened(camera: CameraDevice) {
-            cameraOpened(camera)
-        }
-
-        override fun onDisconnected(camera: CameraDevice) {
-            //see if an action is necessary
-        }
-
-        override fun onError(camera: CameraDevice, error: Int) {
-            //todo: Show friendly screen to tells user that he cant use camera feature
-        }
-
     }
 
     private fun cameraOpened(camera: CameraDevice) {
@@ -144,7 +124,7 @@ class CameraFragment : Fragment() {
                 buffer.get(bytes)
 
                 val myBitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.size, null)
-                val jpegImage= bitmapToJPEG(myBitmap)
+                val jpegImage = bitmapToJPEG(myBitmap)
 
 
                 val intent = Intent(android.content.Intent.ACTION_SEND)
@@ -160,7 +140,7 @@ class CameraFragment : Fragment() {
     private fun bitmapToJPEG(bitmap: Bitmap): File {
         val file = File(externalCacheStoragePath(), "traffic-light.jpeg")
 
-       return compressToPng(bitmap, file)
+        return compressToPng(bitmap, file)
     }
 
     private fun externalCacheStoragePath(): String {
@@ -182,8 +162,6 @@ class CameraFragment : Fragment() {
 //        backgroundThread.start()
 //        backgroundHandler = Handler(backgroundThread.looper)
 //    }
-
-    private fun cameraManager() = context?.getSystemService(Context.CAMERA_SERVICE) as CameraManager
 
     private fun getSurfaceTexture(): SurfaceTexture? {
         val texture = cameraPreview.surfaceTexture
