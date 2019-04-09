@@ -11,6 +11,10 @@ import sauber.com.trafficlight.extensions.requestUserPermission
 
 
 class MainActivity : AppCompatActivity() {
+    companion object {
+        const val CAMERA_PERMISSION_REQUEST_CODE = 1
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -25,20 +29,19 @@ class MainActivity : AppCompatActivity() {
         if (hasPermissionGranted(CAMERA)) {
             openCameraFragment()
         } else {
-            requestUserPermission(1, CAMERA)
+            requestUserPermission(CAMERA_PERMISSION_REQUEST_CODE, CAMERA)
         }
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
         when (requestCode) {
-            1 -> {
-                if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+            CAMERA_PERMISSION_REQUEST_CODE -> {
+                if ((grantResults.isNotEmpty() && grantResults.first() == PackageManager.PERMISSION_GRANTED)) {
                     openCameraFragment()
                 } else {
+                    //todo: show the user reasons that tells he why we need to get this permission
                 }
                 return
-            }
-            else -> {
             }
         }
     }

@@ -1,7 +1,6 @@
 package sauber.com.trafficlight
 
 
-import android.content.Intent
 import android.hardware.camera2.CameraDevice
 import android.os.Bundle
 import android.view.LayoutInflater
