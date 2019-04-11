@@ -1,6 +1,7 @@
 package sauber.com.trafficlight
 
 
+import android.graphics.SurfaceTexture
 import android.hardware.camera2.CameraDevice
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -29,16 +30,17 @@ class CameraFragment : Fragment() {
             camera.openRearCamera({ cameraOpened(it) }, {})
         } else {
             cameraPreview.setSurfaceTextureListener { surfaceTexture, width, height ->
-                camera.openRearCamera({ cameraDevice ->
-                    val areDimensionSwapped = areDimensionSwapped(cameraDevice)
-                    surfaceTexture.setDefaultBufferSize(width, height, areDimensionSwapped)
-                    PreviewSession().createPreviewSession(surfaceTexture, cameraDevice)
-                    cameraOpened(cameraDevice)
-                }, {
-
-                })
+                camera.openRearCamera({
+                    surfaceTexture.setDefaultBufferSize(width, height, areDimensionSwapped(it))
+                    createPreviewSession(surfaceTexture, it)
+                }, {})
             }
         }
+    }
+
+    private fun createPreviewSession(surfaceTexture: SurfaceTexture, cameraDevice: CameraDevice) {
+        PreviewSession().createPreviewSession(surfaceTexture, cameraDevice)
+        cameraOpened(cameraDevice)
     }
 
     private fun areDimensionSwapped(cameraDevice: CameraDevice) =
@@ -54,7 +56,7 @@ class CameraFragment : Fragment() {
         button.setOnClickListener {
             val cameraCapture = CameraCapture()
             cameraCapture.setOnCaptureListener {
-//                val intent = Intent(context, ViewImageClass::class.java)
+                //                val intent = Intent(context, ViewImageClass::class.java)
 //                intent.putExtra("image", it)
 //                startActivity(intent)
             }
