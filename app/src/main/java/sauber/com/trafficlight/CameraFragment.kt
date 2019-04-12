@@ -21,7 +21,8 @@ class CameraFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         context?.also { camera = Camera(it) }
-        cameraPreview.previewSettings = PreviewSettings(camera.sensorOrientation(camera.backCameraId()), deviceOrientation())
+        cameraPreview.previewSettings =
+            PreviewSettings(camera.sensorOrientation(camera.backCameraId()), deviceOrientation())
     }
 
     override fun onResume() {
@@ -37,12 +38,9 @@ class CameraFragment : Fragment() {
     }
 
     private fun openBackCamera(surfaceTexture: SurfaceTexture) {
-        camera.openRearCamera { cameraDevice -> createPreviewSession(surfaceTexture, cameraDevice) }
-    }
-
-    private fun createPreviewSession(surfaceTexture: SurfaceTexture, cameraDevice: CameraDevice) {
-        PreviewSession().createPreviewSession(surfaceTexture, cameraDevice)
-        cameraOpened(cameraDevice)
+        camera.openRearCamera {
+            it.setupPreviewSession(surfaceTexture)
+        }
     }
 
     private fun cameraOpened(camera: CameraDevice) {

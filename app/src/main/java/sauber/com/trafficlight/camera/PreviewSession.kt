@@ -12,19 +12,20 @@ class PreviewSession {
         val surface = Surface(surfaceTexture)
 
         cameraDevice.createCaptureSession(
-            listOf(surface), object : CameraCaptureSession.StateCallback() {
-                override fun onConfigured(cameraCaptureSession: CameraCaptureSession) {
-                    val previewRequest = buildPreviewCaptureRequest(cameraDevice, surface)
-
-                    cameraCaptureSession.setRepeatingRequest(previewRequest, null, null)
-                    //Todo: free camera button to take a picture
-                }
-
-                override fun onConfigureFailed(session: CameraCaptureSession) {
-                    //Todo: Block camera button, show a friendly screen that tells the user that the camera is down
-                }
-            }, null
+            listOf(surface), getStateCallback(buildPreviewCaptureRequest(cameraDevice, surface)), null
         )
+    }
+
+    private fun getStateCallback(previewRequest: CaptureRequest) = object : CameraCaptureSession.StateCallback() {
+        override fun onConfigured(cameraCaptureSession: CameraCaptureSession) {
+
+            cameraCaptureSession.setRepeatingRequest(previewRequest, null, null)
+            //Todo: free camera button to take a picture
+        }
+
+        override fun onConfigureFailed(session: CameraCaptureSession) {
+            //Todo: Block camera button, show a friendly screen that tells the user that the camera is down
+        }
     }
 
     private fun buildPreviewCaptureRequest(cameraDevice: CameraDevice, surface: Surface): CaptureRequest {
