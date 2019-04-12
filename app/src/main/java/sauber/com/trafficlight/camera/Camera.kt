@@ -7,8 +7,13 @@ import android.hardware.camera2.CameraManager
 import sauber.com.trafficlight.extensions.backCameraId
 
 class Camera(private val context: Context) {
+
     private var success: (CameraDevice) -> Unit = {}
     private var fail: (CameraDevice) -> Unit = {}
+
+    fun openRearCamera(success: (CameraDevice) -> Unit) {
+        openRearCamera(success, {})
+    }
 
     fun openRearCamera(success: (CameraDevice) -> Unit, fail: (CameraDevice) -> Unit) {
         this.success = success
@@ -23,19 +28,19 @@ class Camera(private val context: Context) {
         }
     }
 
+    fun backCameraId() = cameraManager().backCameraId()
+
     fun sensorOrientation(cameraId: String): Int {
         val sensorOrientation = getSensorOrientation(cameraId)
         return sensorOrientation ?: 0
     }
+
 
     private fun getSensorOrientation(cameraId: String): Int? {
         return cameraManager()
             .getCameraCharacteristics(cameraId)
             .get(CameraCharacteristics.SENSOR_ORIENTATION)
     }
-
-
-    private fun cameraManager() = context.getSystemService(Context.CAMERA_SERVICE) as CameraManager
 
     private val listener = object : CameraDevice.StateCallback() {
         override fun onOpened(camera: CameraDevice) {
@@ -51,4 +56,5 @@ class Camera(private val context: Context) {
         }
     }
 
+    private fun cameraManager() = context.getSystemService(Context.CAMERA_SERVICE) as CameraManager
 }

@@ -4,20 +4,31 @@ import android.content.Context
 import android.graphics.SurfaceTexture
 import android.util.AttributeSet
 import android.view.TextureView
+import sauber.com.trafficlight.camera.PreviewSettings.Companion.INVERTED
 
 class CameraPreview(context: Context, attributes: AttributeSet) : TextureView(context, attributes) {
 
-    fun setSurfaceTextureListener(surfaceAvailable: (surfaceTexture: SurfaceTexture, width: Int, height: Int) -> Unit) {
+    var previewSettings: PreviewSettings? = null
+
+    fun setSurfaceTextureListener(surfaceAvailable: (surfaceTexture: SurfaceTexture) -> Unit) {
         surfaceTextureListener = SurfaceListener(surfaceAvailable)
     }
 
-    private inner class SurfaceListener(val surfaceAvailable: (surfaceTexture: SurfaceTexture, width: Int, height: Int) -> Unit)
-        : TextureView.SurfaceTextureListener {
+
+    private inner class SurfaceListener(val surfaceAvailable: (surfaceTexture: SurfaceTexture) -> Unit) :
+        TextureView.SurfaceTextureListener {
 
         override fun onSurfaceTextureAvailable(surfaceTexture: SurfaceTexture, width: Int, height: Int) {
-            surfaceAvailable(surfaceTexture, width, height)
-        }
+            previewSettings?.also {
+                if (it.getDimensionState() == INVERTED) {
+                    surfaceTexture.setDefaultBufferSize(height, width)
+                } else {
+                    surfaceTexture.setDefaultBufferSize(width, height)
+                }
 
+                surfaceAvailable(surfaceTexture)
+            }
+        }
 
         override fun onSurfaceTextureUpdated(surface: SurfaceTexture?) {
 

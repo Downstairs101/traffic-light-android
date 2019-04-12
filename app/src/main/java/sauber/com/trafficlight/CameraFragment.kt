@@ -21,32 +21,29 @@ class CameraFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         context?.also { camera = Camera(it) }
+        cameraPreview.previewSettings = PreviewSettings(camera.sensorOrientation(camera.backCameraId()), deviceOrientation())
     }
 
     override fun onResume() {
         super.onResume()
 
         if (cameraPreview.isAvailable) {
-            camera.openRearCamera({ cameraOpened(it) }, {})
+            camera.openRearCamera { cameraOpened(it) }
         } else {
-            cameraPreview.setSurfaceTextureListener { surfaceTexture, width, height ->
-                camera.openRearCamera({
-                    surfaceTexture.setDefaultBufferSize(width, height, areDimensionSwapped(it))
-                    createPreviewSession(surfaceTexture, it)
-                }, {})
+            cameraPreview.setSurfaceTextureListener { surfaceTexture ->
+                openBackCamera(surfaceTexture)
             }
         }
+    }
+
+    private fun openBackCamera(surfaceTexture: SurfaceTexture) {
+        camera.openRearCamera { cameraDevice -> createPreviewSession(surfaceTexture, cameraDevice) }
     }
 
     private fun createPreviewSession(surfaceTexture: SurfaceTexture, cameraDevice: CameraDevice) {
         PreviewSession().createPreviewSession(surfaceTexture, cameraDevice)
         cameraOpened(cameraDevice)
     }
-
-    private fun areDimensionSwapped(cameraDevice: CameraDevice) =
-        CameraSettings()
-            .areDimensionsSwapped(camera.sensorOrientation(cameraDevice.id), deviceOrientation())
-
 
     private fun cameraOpened(camera: CameraDevice) {
         setCameraButtonListener(camera)
