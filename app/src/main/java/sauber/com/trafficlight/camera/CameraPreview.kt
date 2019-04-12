@@ -15,8 +15,7 @@ class CameraPreview(context: Context, attributes: AttributeSet) : TextureView(co
     }
 
 
-    private inner class SurfaceListener(val surfaceAvailable: (surfaceTexture: SurfaceTexture) -> Unit) :
-        TextureView.SurfaceTextureListener {
+    private inner class SurfaceListener(val surfaceAvailable: (surfaceTexture: SurfaceTexture) -> Unit) : SurfaceTextureListener {
 
         override fun onSurfaceTextureAvailable(surfaceTexture: SurfaceTexture, width: Int, height: Int) {
             previewSettings?.also {
