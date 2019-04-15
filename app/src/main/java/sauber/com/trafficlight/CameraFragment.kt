@@ -5,12 +5,13 @@ import android.graphics.SurfaceTexture
 import android.hardware.camera2.CameraDevice
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.fragment_camera.*
 import sauber.com.trafficlight.camera.Camera
-import sauber.com.trafficlight.camera.CameraCapture
 import sauber.com.trafficlight.camera.PreviewSettings
 import sauber.com.trafficlight.camera.setupPreviewSession
 
@@ -23,10 +24,21 @@ class CameraFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        configureActionBar()
+
         context?.also { camera = Camera(it) }
         cameraPreview.previewSettings =
             PreviewSettings(camera.sensorOrientation(camera.backCameraId()), deviceOrientation())
     }
+
+    private fun configureActionBar() {
+        toolbarIcon.setImageResource(R.drawable.ic_outline_close)
+        toolbarIcon.setOnClickListener {
+            appCompatActivity().onBackPressed()
+        }
+    }
+
+    private fun appCompatActivity() = (activity as AppCompatActivity)
 
     override fun onResume() {
         super.onResume()
@@ -34,9 +46,7 @@ class CameraFragment : Fragment() {
         if (cameraPreview.isAvailable) {
             camera.openRearCamera { cameraOpened(it) }
         } else {
-            cameraPreview.setSurfaceTextureListener { surfaceTexture ->
-                openBackCamera(surfaceTexture)
-            }
+            cameraPreview.setSurfaceTextureListener { surfaceTexture -> openBackCamera(surfaceTexture) }
         }
     }
 
@@ -51,16 +61,16 @@ class CameraFragment : Fragment() {
     }
 
     private fun setCameraButtonListener(camera: CameraDevice) {
-        button.setOnClickListener {
-            val cameraCapture = CameraCapture()
-            cameraCapture.setOnCaptureListener {
-                //                val intent = Intent(context, ViewImageClass::class.java)
-//                intent.putExtra("image", it)
-//                startActivity(intent)
-            }
-
-            cameraCapture.createStillCaptureSession(camera, cameraPreview.height, cameraPreview.width)
-        }
+//        button.setOnClickListener {
+//            val cameraCapture = CameraCapture()
+//            cameraCapture.setOnCaptureListener {
+//                //                val intent = Intent(context, ViewImageClass::class.java)
+////                intent.putExtra("image", it)
+////                startActivity(intent)
+//            }
+//
+//            cameraCapture.createStillCaptureSession(camera, cameraPreview.height, cameraPreview.width)
+//        }
 
     }
 
