@@ -9,7 +9,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.fragment_camera.*
-import sauber.com.trafficlight.camera.*
+import sauber.com.trafficlight.camera.Camera
+import sauber.com.trafficlight.camera.CameraCapture
+import sauber.com.trafficlight.camera.PreviewSettings
+import sauber.com.trafficlight.camera.setupPreviewSession
 
 
 class CameraFragment : Fragment() {

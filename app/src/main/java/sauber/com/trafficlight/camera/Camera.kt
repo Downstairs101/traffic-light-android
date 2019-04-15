@@ -36,11 +36,14 @@ class Camera(private val context: Context) {
     }
 
 
-    private fun getSensorOrientation(cameraId: String): Int? {
-        return cameraManager()
-            .getCameraCharacteristics(cameraId)
-            .get(CameraCharacteristics.SENSOR_ORIENTATION)
-    }
+    private fun getSensorOrientation(cameraId: String) =
+        getCameraCharacteristics(cameraId).get(CameraCharacteristics.SENSOR_ORIENTATION)
+
+    private fun getCameraCharacteristics(cameraId: String) = cameraManager().getCameraCharacteristics(cameraId)
+
+
+    fun getScalerMap(cameraId: String) =
+        getCameraCharacteristics(cameraId).get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP)
 
     private val listener = object : CameraDevice.StateCallback() {
         override fun onOpened(camera: CameraDevice) {
