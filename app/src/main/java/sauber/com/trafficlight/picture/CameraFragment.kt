@@ -1,16 +1,16 @@
-package sauber.com.trafficlight
+package sauber.com.trafficlight.picture
 
 
 import android.graphics.SurfaceTexture
 import android.hardware.camera2.CameraDevice
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.fragment_camera.*
+import sauber.com.trafficlight.R
 import sauber.com.trafficlight.camera.Camera
 import sauber.com.trafficlight.camera.PreviewSettings
 import sauber.com.trafficlight.camera.setupPreviewSession

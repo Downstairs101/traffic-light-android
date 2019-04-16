@@ -3,8 +3,8 @@
             xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/main_navigation_graph" app:startDestination="@id/postListFragment">
 
-    <fragment android:id="@+id/cameraFragment" android:name="sauber.com.trafficlight.CameraFragment"
+    <fragment android:id="@+id/cameraFragment" android:name="sauber.com.trafficlight.picture.CameraFragment"
               android:label="CameraFragment"/>
-    <fragment android:id="@+id/postListFragment" android:name="sauber.com.trafficlight.PostListFragment"
+    <fragment android:id="@+id/postListFragment" android:name="sauber.com.trafficlight.post.PostListFragment"
               android:label="PostListFragment"/>
 </navigation>
