@@ -1,12 +1,9 @@
 package sauber.com.trafficlight.camera
 
-import android.content.ContentValues
 import android.content.Context
 import android.graphics.SurfaceTexture
 import android.util.AttributeSet
-import android.util.Log
 import android.util.Size
-import android.view.Surface
 import android.view.TextureView
 
 class CameraPreview(context: Context, attributes: AttributeSet) : TextureView(context, attributes) {
@@ -43,46 +40,15 @@ class CameraPreview(context: Context, attributes: AttributeSet) : TextureView(co
 
     }
 
-    private fun optimizePreviewSize(cameraSettings: Camera.CameraSettings): Size {
-        val previewSize = getFitsPreviewSize(cameraSettings)
-
-        val sensorOrientation = cameraSettings.sensorOrientation()
-        val displayOrientation = display.rotation
-        val sizeState = getSizeState(displayOrientation, sensorOrientation)
-
-        return alignSize(Size(previewSize.width, previewSize.height), sizeState)
-    }
+    private fun optimizePreviewSize(cameraSettings: Camera.CameraSettings) = getFitsPreviewSize(cameraSettings)
 
     private fun getFitsPreviewSize(cameraSettings: Camera.CameraSettings): Size {
-        return cameraSettings.getSupportedSizes().first { it.width == it.height }
+        val supportedSizes = cameraSettings.getSupportedSizes()
+
+        return supportedSizes.firstOrNull {
+            it.width * aspectRatio().height == it.height * aspectRatio().width
+        } ?: supportedSizes.first()
     }
 
-    private fun alignSize(size: Size, sizeState: Int): Size {
-        if (sizeState == INVERTED)
-            return Size(size.height, size.width)
-
-        return Size(size.width, size.height)
-    }
-
-    companion object {
-        const val NORMAL = 0
-        const val INVERTED = 1
-    }
-
-    private fun getSizeState(displayOrientation: Int, sensorOrientation: Int): Int {
-        when (displayOrientation) {
-            Surface.ROTATION_0, Surface.ROTATION_180 -> {
-                if (sensorOrientation == 90 || sensorOrientation == 270) return INVERTED
-            }
-
-            Surface.ROTATION_90, Surface.ROTATION_270 -> {
-                if (sensorOrientation == 0 || sensorOrientation == 180) return INVERTED
-            }
-
-            else -> {
-                Log.e(ContentValues.TAG, "Display rotation is invalid: $displayOrientation")
-            }
-        }
-        return NORMAL
-    }
+    private fun aspectRatio() = Size(1, 1)
 }
