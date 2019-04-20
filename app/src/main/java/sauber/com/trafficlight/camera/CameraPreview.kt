@@ -44,11 +44,35 @@ class CameraPreview(context: Context, attributes: AttributeSet) : TextureView(co
 
     private fun getFitsPreviewSize(cameraSettings: Camera.CameraSettings): Size {
         val supportedSizes = cameraSettings.getSupportedSizes()
+        var size: Size? = null
 
-        return supportedSizes.firstOrNull {
-            it.width * aspectRatio().height == it.height * aspectRatio().width
-        } ?: supportedSizes.first()
+        if (supportedSizes.any { matchesAspectRatio(it) }) {
+            size = successorViewSize(supportedSizes)
+            size ?: predecessorViewSize(supportedSizes)
+        }
+
+        return size ?: supportedSizes.first()
     }
+
+    private fun successorViewSize(supportedSizes: List<Size>): Size? {
+        return supportedSizes
+            .filter { matchesAspectRatio(it) && sizeIsBiggerThanView(it) }
+            .minBy { area(it.width, it.height) }
+    }
+
+    private fun predecessorViewSize(supportedSizes: List<Size>): Size? {
+        return supportedSizes
+            .filter { matchesAspectRatio(it) && sizeIsMinorThanView(it) }
+            .maxBy { it.width * it.height }
+    }
+
+    private fun area(width: Int, height: Int) = width * height
+
+    private fun sizeIsBiggerThanView(size: Size) = size.width >= width && size.height >= height
+
+    private fun sizeIsMinorThanView(size: Size) = size.width <= width && size.height <= height
+
+    private fun matchesAspectRatio(size: Size) = size.width * aspectRatio().height == size.height * aspectRatio().width
 
     private fun aspectRatio() = Size(1, 1)
 }

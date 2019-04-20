@@ -61,8 +61,7 @@ class Camera(private val context: Context) {
             return sensorOrientation ?: 0
         }
 
-        fun getSupportedSizes(): Array<out Size> = getScalarMap()?.getOutputSizes(SurfaceTexture::class.java) ?: arrayOf()
-
+        fun getSupportedSizes() = getScalarMap()?.getOutputSizes(SurfaceTexture::class.java)?.toList() ?: listOf()
 
         private fun getScalarMap(): StreamConfigurationMap? {
             return getCameraCharacteristics().get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP)
