@@ -1,10 +1,7 @@
-package sauber.com.trafficlight.camera
+package com.downstairs101.camera.view.camera
 
-import android.content.ContentValues
 import android.graphics.SurfaceTexture
-import android.util.Log
 import android.util.Size
-import android.view.Surface
 
 fun SurfaceTexture.setDefaultBufferSize(size: Size) {
     this.setDefaultBufferSize(size.width, size.height)

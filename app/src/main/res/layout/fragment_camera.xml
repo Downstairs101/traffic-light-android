@@ -21,7 +21,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"/>
     </LinearLayout>
-    <sauber.com.trafficlight.camera.CameraPreview
+    <com.downstairs101.camera.view.CameraPreview
             android:id="@+id/cameraPreview"
             android:layout_width="0dp"
             android:layout_height="0dp"
@@ -31,6 +31,6 @@
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintTop_toBottomOf="@+id/linearLayout">
 
-    </sauber.com.trafficlight.camera.CameraPreview>
+    </com.downstairs101.camera.view.CameraPreview>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

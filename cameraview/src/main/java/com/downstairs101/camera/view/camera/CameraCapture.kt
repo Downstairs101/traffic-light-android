@@ -1,4 +1,4 @@
-package sauber.com.trafficlight.camera
+package com.downstairs101.camera.view.camera
 
 import android.graphics.ImageFormat
 import android.hardware.camera2.CameraCaptureSession

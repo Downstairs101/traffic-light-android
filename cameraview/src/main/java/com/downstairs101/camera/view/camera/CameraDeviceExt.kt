@@ -1,4 +1,4 @@
-package sauber.com.trafficlight.camera
+package com.downstairs101.camera.view.camera
 
 import android.graphics.SurfaceTexture
 import android.hardware.camera2.CameraCaptureSession
@@ -10,7 +10,8 @@ fun CameraDevice.setupPreviewSession(surfaceTexture: SurfaceTexture): SessionSta
     val surface = Surface(surfaceTexture)
     val previewRequest = buildPreviewCaptureRequest(this, surface)
     val sessionStateCallback = SessionStateCallback()
-    createCaptureSession(listOf(surface), getStateCallback(previewRequest, sessionStateCallback), null)
+    createCaptureSession(listOf(surface),
+        getStateCallback(previewRequest, sessionStateCallback), null)
 
     return sessionStateCallback
 }

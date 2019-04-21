@@ -1,7 +1,6 @@
 package sauber.com.trafficlight.picture
 
 
-import android.hardware.camera2.CameraDevice
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -32,17 +31,17 @@ class CameraFragment : Fragment() {
 
     private fun appCompatActivity() = (activity as AppCompatActivity)
 
-    private fun setCameraButtonListener(camera: CameraDevice) {
-//        button.setOnClickListener {
-//            val cameraCapture = CameraCapture()
-//            cameraCapture.setOnCaptureListener {
-//                //                val intent = Intent(context, ViewImageClass::class.java)
-////                intent.putExtra("image", it)
-////                startActivity(intent)
-//            }
+//    private fun setCameraButtonListener(camera: CameraDevice) {
+////        button.setOnClickListener {
+////            val cameraCapture = CameraCapture()
+////            cameraCapture.setOnCaptureListener {
+////                //                val intent = Intent(context, ViewImageClass::class.java)
+//////                intent.putExtra("image", it)
+//////                startActivity(intent)
+////            }
+////
+////            cameraCapture.createStillCaptureSession(camera, cameraPreview.height, cameraPreview.width)
+////        }
 //
-//            cameraCapture.createStillCaptureSession(camera, cameraPreview.height, cameraPreview.width)
-//        }
-
-    }
+//    }
 }

@@ -1,4 +1,4 @@
-package sauber.com.trafficlight.camera
+package com.downstairs101.camera.view.camera
 
 import android.content.Context
 import android.graphics.SurfaceTexture
@@ -6,8 +6,6 @@ import android.hardware.camera2.CameraCharacteristics
 import android.hardware.camera2.CameraDevice
 import android.hardware.camera2.CameraManager
 import android.hardware.camera2.params.StreamConfigurationMap
-import android.util.Size
-import sauber.com.trafficlight.extensions.backCameraId
 
 class Camera(private val context: Context) {
 
@@ -47,8 +45,6 @@ class Camera(private val context: Context) {
             fail(CameraSettings(camera))
         }
     }
-
-    fun getCameraSettings(cameraDevice: CameraDevice) = CameraSettings(cameraDevice)
 
     inner class CameraSettings(private val cameraDevice: CameraDevice) {
 

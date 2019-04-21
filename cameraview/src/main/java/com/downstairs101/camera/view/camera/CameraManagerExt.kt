@@ -1,4 +1,4 @@
-package sauber.com.trafficlight.extensions
+package com.downstairs101.camera.view.camera
 
 import android.hardware.camera2.CameraCharacteristics
 import android.hardware.camera2.CameraManager

@@ -1,10 +1,11 @@
-package sauber.com.trafficlight.camera
+package com.downstairs101.camera.view
 
 import android.content.Context
 import android.graphics.SurfaceTexture
 import android.util.AttributeSet
 import android.util.Size
 import android.view.TextureView
+import com.downstairs101.camera.view.camera.Camera
 
 class CameraPreview(context: Context, attributes: AttributeSet) : TextureView(context, attributes) {
 
