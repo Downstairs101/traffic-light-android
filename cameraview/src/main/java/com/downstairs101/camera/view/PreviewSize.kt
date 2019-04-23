@@ -11,22 +11,32 @@ class PreviewSize {
         var size: Size? = null
 
         if (supportedSizes.any { matchesAspectRatio(it) }) {
-            size = selectSuccessorViewSize(view, supportedSizes)
-            size ?: selectPredecessorViewSize(view, supportedSizes)
+            val aspectRatioMatches = selectAspectRatioMatches(supportedSizes)
+            size = select(view, aspectRatioMatches)
         }
 
-        return size ?: supportedSizes.first()
+        return size
+            ?: select(view, supportedSizes)
+            ?: supportedSizes.first()
+    }
+
+    private fun select(view: View, supportedSizes: List<Size>): Size? {
+        val size: Size? = selectSuccessorViewSize(view, supportedSizes)
+        return size ?: selectPredecessorViewSize(view, supportedSizes)
+    }
+
+    private fun selectAspectRatioMatches(supportedSizes: List<Size>): List<Size> {
+        return supportedSizes.filter { matchesAspectRatio(it) }
     }
 
     private fun selectSuccessorViewSize(view: View, supportedSizes: List<Size>): Size? {
-        return supportedSizes
-            .filter { matchesAspectRatio(it) && sizeIsBiggerThanView(view, it) }
+        return supportedSizes.filter { sizeIsBiggerThanView(view, it) }
             .minBy { area(it.width, it.height) }
     }
 
     private fun selectPredecessorViewSize(view: View, supportedSizes: List<Size>): Size? {
         return supportedSizes
-            .filter { matchesAspectRatio(it) && sizeIsMinorThanView(view, it) }
+            .filter { sizeIsMinorThanView(view, it) }
             .maxBy { it.width * it.height }
     }
 
