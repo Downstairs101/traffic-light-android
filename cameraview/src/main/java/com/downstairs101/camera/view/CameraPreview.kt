@@ -28,7 +28,6 @@ class CameraPreview(context: Context, attributes: AttributeSet) : TextureView(co
         }
 
         override fun onSurfaceTextureUpdated(surface: SurfaceTexture?) {
-
         }
 
         override fun onSurfaceTextureSizeChanged(surface: SurfaceTexture?, width: Int, height: Int) {
