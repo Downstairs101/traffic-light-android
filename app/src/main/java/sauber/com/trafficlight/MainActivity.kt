@@ -9,6 +9,7 @@ import com.camerakit.CameraKitView
 import kotlinx.android.synthetic.main.activity_main.*
 import sauber.com.trafficlight.extensions.hasPermissionGranted
 import sauber.com.trafficlight.extensions.requestUserPermission
+import sauber.com.trafficlight.picture.CameraFragment
 
 
 class MainActivity : AppCompatActivity(), CameraCallbacks {
@@ -23,9 +24,16 @@ class MainActivity : AppCompatActivity(), CameraCallbacks {
         setContentView(R.layout.activity_main)
 
         addButton.setOnClickListener {
-            requestCameraPermissions()
+            val currentFragment = getCurrentFragment()
+            if (currentFragment is CameraFragment) {
+                currentFragment.stillPicture()
+            } else {
+                requestCameraPermissions()
+            }
         }
     }
+
+    private fun getCurrentFragment() = fragmentHost.childFragmentManager.fragments[0]
 
 
     private fun requestCameraPermissions() {
