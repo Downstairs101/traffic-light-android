@@ -1,10 +1,7 @@
 package sauber.com.trafficlight.picture
 
 
-import android.content.Intent
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.net.Uri
 import android.os.Bundle
 import android.os.StrictMode
 import android.view.LayoutInflater
@@ -74,29 +71,6 @@ class CameraFragment : Fragment() {
             appCompatActivity().onBackPressed()
         }
     }
-
-    fun stillPicture() {
-        cameraPreview.captureImage { cameraKitView, capturedImage ->
-            cameraKitView.previewResolution
-            parseToBitMap(capturedImage)
-        }
-    }
-
-    private fun parseToBitMap(capturedImage: ByteArray) {
-        val builder = StrictMode.VmPolicy.Builder()
-        StrictMode.setVmPolicy(builder.build())
-
-        val originalImage = BitmapFactory.decodeByteArray(capturedImage, 0, capturedImage.size, null)
-        val jpegImage = bitmapToJPEG(originalImage)
-
-        val intent = Intent(Intent.ACTION_SEND)
-        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-        intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(jpegImage))
-        intent.type = "image/jpeg"
-
-        startActivity(intent)
-    }
-
 
     private fun bitmapToJPEG(bitmap: Bitmap): File {
         val file = File(externalCacheStoragePath(), "traffic-light.jpeg")
