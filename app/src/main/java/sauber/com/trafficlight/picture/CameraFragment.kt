@@ -1,9 +1,7 @@
 package sauber.com.trafficlight.picture
 
 
-import android.graphics.Bitmap
 import android.os.Bundle
-import android.os.StrictMode
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,8 +11,6 @@ import com.camerakit.CameraKitView
 import kotlinx.android.synthetic.main.fragment_camera.*
 import sauber.com.trafficlight.CameraCallbacks
 import sauber.com.trafficlight.R
-import java.io.File
-import java.io.FileOutputStream
 
 class CameraFragment : Fragment() {
 
@@ -34,7 +30,7 @@ class CameraFragment : Fragment() {
             }
 
             override fun onClosed() {
-                cameraCallbacks().closed()
+
             }
         }
 
@@ -42,6 +38,10 @@ class CameraFragment : Fragment() {
             cameraKitView.onStop()
             cameraCallbacks().error(cameraException)
         }
+    }
+
+    fun stillPicture() {
+
     }
 
     override fun onStart() {
@@ -60,8 +60,8 @@ class CameraFragment : Fragment() {
     }
 
     override fun onStop() {
-        cameraCallbacks().closed()
         cameraPreview.onStop()
+        cameraCallbacks().closed()
         super.onStop()
     }
 
@@ -70,26 +70,6 @@ class CameraFragment : Fragment() {
         toolbarIcon.setOnClickListener {
             appCompatActivity().onBackPressed()
         }
-    }
-
-    private fun bitmapToJPEG(bitmap: Bitmap): File {
-        val file = File(externalCacheStoragePath(), "traffic-light.jpeg")
-
-        return compressToPng(bitmap, file)
-    }
-
-    private fun externalCacheStoragePath(): String {
-        val builder = StrictMode.VmPolicy.Builder()
-        StrictMode.setVmPolicy(builder.build())
-        return context?.externalCacheDir.toString()
-    }
-
-    private fun compressToPng(bitmap: Bitmap, file: File): File {
-        val fileOutput = FileOutputStream(file)
-        if (file.setReadable(true, true)) {
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fileOutput)
-        }
-        return file
     }
 
     private fun appCompatActivity() = (activity as AppCompatActivity)

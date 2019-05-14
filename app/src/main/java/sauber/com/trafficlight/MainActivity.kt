@@ -15,7 +15,7 @@ import sauber.com.trafficlight.picture.CameraFragment
 class MainActivity : AppCompatActivity(), CameraCallbacks {
     companion object {
         const val CAMERA_PERMISSION_REQUEST_CODE = 1
-        const val ANIMATION_DELAY = 200L
+        const val ANIMATION_DELAY = 250L
         const val INITIAL_POSITION = 0f
     }
 
